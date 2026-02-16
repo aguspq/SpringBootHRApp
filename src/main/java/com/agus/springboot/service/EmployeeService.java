@@ -24,16 +24,15 @@ public class EmployeeService {
     public EmployeesDTO saveEmployee(EmployeesDTO dto) {
         // Mueve aquí la lógica de:
         // 1. Buscar departamento
-        if (dto.getEmpno() != null && employeeDAO.existsById(dto.getEmpno())) {
-            throw new RuntimeException("Employee already exists");
-        }
+        if(dto.getEmpno() != null)
+            throw new RuntimeException("You can't pass an ID to create");
+
         Optional<DeptEntity> dept = deptDAO.findById(dto.getDeptno());
         if (dept.isEmpty()) {
             throw new RuntimeException("Department does not exist");
         }
         // 2. Mapear la Entity
         EmployeeEntity emplEntity = new EmployeeEntity();
-        emplEntity.setEmpno(dto.getEmpno());
         emplEntity.setEname(dto.getName());
         emplEntity.setJob(dto.getJob());
         // DEPT we use get() because is OPTIONAL
@@ -47,28 +46,12 @@ public class EmployeeService {
     }
 
     public EmployeesDTO findEmployeeByIdDTO(int id){
-        Optional<EmployeeEntity> employee = employeeDAO.findById(id);
+        return employeeDAO.findById(id)
+                .map(this::convertEntityToDTO)
+                .orElse(null);
 
-        if (employee.isEmpty()) {
-            return null;
-        }
-
-        EmployeeEntity empl = employee.get();
-        EmployeesDTO employeesDTO = new EmployeesDTO();
-
-        employeesDTO.setEmpno(empl.getEmpno());
-        employeesDTO.setName(empl.getEname());
-        employeesDTO.setJob(empl.getJob());
-
-        if(employee.get().getDept() != null){
-            employeesDTO.setDeptNo(empl.getDept().getDeptno());
-            employeesDTO.setDeptName(empl.getDept().getDname());
-            employeesDTO.setDeptLocation(empl.getDept().getLoc());
-        }
-        return employeesDTO;
-//        Thats the idea, but I need to do ==> DTO -> Entity -> DTO
-//        EmployeesDTO empFound = employeeDAO.findById(id);
     }
+
 
     public List<EmployeesDTO> findAllEmployees() {
         // convert List<EmployeeEntity> ==> List<EmployeesDTO>
@@ -86,14 +69,19 @@ public class EmployeeService {
 //    }
 //    INSTEAD OF AND LIST WE CONVERT AN OBJECT
     private EmployeesDTO convertEntityToDTO(EmployeeEntity employeeEntity){
-        return new EmployeesDTO(
-                employeeEntity.getEmpno(),
-                employeeEntity.getEname(),
-                employeeEntity.getJob(),
-                employeeEntity.getDept().getDeptno(),
-                employeeEntity.getDept().getDname(),
-                employeeEntity.getDept().getLoc()
-        );
+        EmployeesDTO dto = new EmployeesDTO();
+        dto.setEmpno(employeeEntity.getEmpno());
+        dto.setName(employeeEntity.getEname());
+        dto.setJob(employeeEntity.getJob());
+
+        if(employeeEntity.getDept() != null){
+            dto.setDeptNo(employeeEntity.getDept().getDeptno());
+            dto.setDeptName(employeeEntity.getDept().getDname());
+            dto.setDeptLocation(employeeEntity.getDept().getLoc());
+        }
+
+        return dto;
+
     }
 
     public boolean deleteUser(int id){
