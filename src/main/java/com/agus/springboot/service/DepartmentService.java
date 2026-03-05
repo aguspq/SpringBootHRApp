@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentService {
@@ -36,16 +37,19 @@ public class DepartmentService {
         dto.setLocation(dept.getLoc());
 
         if(dept.getEmployees() != null){
-//            Entity List
+////            Entity List
             List<EmployeeEntity> employees = new ArrayList<>(dept.getEmployees());
-//            DTO List
-            List<EmployeesDTO> employeesDTOList = new ArrayList<>();
-
-            for (EmployeeEntity empl : employees){
-                employeesDTOList.add(convertEmplEntityToDTO(empl));
-            }
-
-            dto.setEmployeesDTOList(employeesDTOList);
+////            DTO List
+//            List<EmployeesDTO> employeesDTOList = new ArrayList<>();
+//
+//            for (EmployeeEntity empl : employees){
+//                employeesDTOList.add(convertEmplEntityToDTO(empl));
+//            }
+//
+//            dto.setEmployeesDTOList(employeesDTOList);
+            dto.setEmployeesDTOList(employees.stream()
+                    .map(this::convertEmplEntityToDTO)
+                    .toList());
         }
 
         return dto;
