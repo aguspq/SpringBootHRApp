@@ -62,7 +62,11 @@ public class EmployeeController {
         return ResponseEntity.noContent().build(); // 204 is a standard code to deleted successfully
 //                                                  same but without response. More "pro"
 
+    }
 
+    @GetMapping("/unassigned")
+    public ResponseEntity<List<EmployeesDTO>> getUnassigned(){
+        return ResponseEntity.ok(emplService.findUnassignedEmployeesDTO());
     }
 
 }

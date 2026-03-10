@@ -117,4 +117,22 @@ public class EmployeeService {
 
         return convertEntityToDTO(employeeDAO.save(employee));
     }
+
+    public List<EmployeesDTO> findUnassignedEmployeesDTO(){
+
+//        List<EmployeeEntity> nullEmplList = employeeDAO.findUnassignedEmployees();
+//        List<EmployeesDTO> nullDTO = new ArrayList<>();
+//        for(EmployeeEntity empl : nullEmplList){
+//            nullDTO.add(convertEntityToDTO(empl));
+//        }
+//
+//        return nullDTO;
+//
+        List<EmployeeEntity> nullEmplList = employeeDAO.findUnassignedEmployees();
+
+        return nullEmplList.stream()
+                .map(this::convertEntityToDTO)
+                .toList();
+
+    }
 }
