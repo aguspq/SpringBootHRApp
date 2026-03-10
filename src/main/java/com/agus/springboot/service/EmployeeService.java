@@ -135,4 +135,26 @@ public class EmployeeService {
                 .toList();
 
     }
+
+    public EmployeesDTO reassignDeptToEmployee(int emplId, int deptno){
+        EmployeeEntity employee = employeeDAO.findById(emplId)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee with id" + emplId + " not found"));
+
+        if(deptno > 0){
+            DeptEntity dept = deptDAO.findById(deptno)
+                    .orElseThrow(() -> new ResourceNotFoundException("Dept with id" + deptno + " not found"));
+
+            if(dept.getIsActive())
+                employee.setDept(dept);
+            else throw new ResourceNotFoundException("Dept must be active");
+
+        } else if(deptno == 0){
+            employee.setDept(null);
+        } else
+            throw new ResourceNotFoundException("Dept number must be greater than 0");
+
+        return convertEntityToDTO(employeeDAO.save(employee));
+
+
+    }
 }

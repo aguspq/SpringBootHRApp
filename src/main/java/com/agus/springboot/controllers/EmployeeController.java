@@ -54,6 +54,11 @@ public class EmployeeController {
 
 
     // ------------------------------
+    @GetMapping("/unassigned")
+    public ResponseEntity<List<EmployeesDTO>> getUnassigned(){
+        return ResponseEntity.ok(emplService.findUnassignedEmployeesDTO());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable(value = "id") int id){
 
@@ -64,9 +69,12 @@ public class EmployeeController {
 
     }
 
-    @GetMapping("/unassigned")
-    public ResponseEntity<List<EmployeesDTO>> getUnassigned(){
-        return ResponseEntity.ok(emplService.findUnassignedEmployeesDTO());
+    @PatchMapping("/{id}/dept/{deptNo}")
+    public ResponseEntity<EmployeesDTO> reassignDeptToEmpl(@PathVariable(value = "id") int id,
+                                                @PathVariable(value = "deptNo") int deptno){
+
+        return ResponseEntity.ok(emplService.reassignDeptToEmployee(id, deptno));
+
     }
 
 }
