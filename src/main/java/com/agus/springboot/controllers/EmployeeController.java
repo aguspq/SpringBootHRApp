@@ -31,7 +31,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeesDTOList);
     }
 
-    @GetMapping("/dto/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<EmployeesDTO> findEmployeeByIdDTO (@PathVariable(value = "id") int id){
 
         return ResponseEntity.ok(emplService.findEmployeeByIdDTO(id));
@@ -59,7 +59,7 @@ public class EmployeeController {
         return ResponseEntity.ok(emplService.findUnassignedEmployeesDTO());
     }
 
-    @DeleteMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable(value = "id") int id){
 
         emplService.deleteUser(id);

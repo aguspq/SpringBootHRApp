@@ -27,6 +27,8 @@ public class EmployeeEntity {
     @JsonBackReference
     private DeptEntity dept;
 
+    @Column(name = "isactive")
+    private Boolean isActive = true;
 
     public Integer getEmpno() {
         return empno;
@@ -60,6 +62,13 @@ public class EmployeeEntity {
         this.dept = dept;
     }
 
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,4 +80,5 @@ public class EmployeeEntity {
     public int hashCode() {
         return Objects.hash(getEmpno(), getEname(), getJob());
     }
+
 }

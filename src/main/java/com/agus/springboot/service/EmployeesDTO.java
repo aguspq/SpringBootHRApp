@@ -1,6 +1,5 @@
 package com.agus.springboot.service;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.*;
 
 public class EmployeesDTO {
@@ -45,7 +44,7 @@ public class EmployeesDTO {
     public void setJob(String job){
         this.job = job;
     }
-    public Integer getDeptno() {return deptno;}
+    public Integer getDeptNo() {return deptno;}
     public void setDeptNo(int deptno){
         this.deptno = deptno;
     }
