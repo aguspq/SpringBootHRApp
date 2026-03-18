@@ -3,19 +3,26 @@ package com.agus.springboot.service;
 import com.agus.springboot.exceptions.ResourceNotFoundException;
 import com.agus.springboot.model.dao.IDeptDAO;
 import com.agus.springboot.model.dao.IEmployeeDAO;
+import com.agus.springboot.model.dao.IProjectDAO;
 import com.agus.springboot.model.entities.DeptEntity;
 import com.agus.springboot.model.entities.EmployeeEntity;
+import com.agus.springboot.model.entities.ProjectEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
     @Autowired
     private IEmployeeDAO employeeDAO;
+    @Autowired
+    private IProjectDAO projectDAO;
 
     @Autowired
     private IDeptDAO deptDAO;
@@ -65,12 +72,29 @@ public class EmployeeService {
 
     }
 
+    private ProjectDTO convertProjectToDTO(ProjectEntity project){
+        ProjectDTO dto = new ProjectDTO(
+                project.getId(),
+                project.getName()
+        );
+
+        return dto;
+    }
+
 //    INSTEAD OF AND LIST WE CONVERT AN OBJECT
     private EmployeesDTO convertEntityToDTO(EmployeeEntity employeeEntity){
         EmployeesDTO dto = new EmployeesDTO();
         dto.setEmpno(employeeEntity.getEmpno());
         dto.setName(employeeEntity.getEname());
         dto.setJob(employeeEntity.getJob());
+//        dto.setProjectDTOSet(employeeEntity.getProjects());
+//        employeeEntity.getProjects().stream().map(this::convertProjectToDTO);
+
+        if(employeeEntity.getProjects() != null){
+            dto.setProjectDTOSet(employeeEntity.getProjects().stream()
+                    .map(this::convertProjectToDTO)
+                    .collect(Collectors.toSet()));
+        }
 
         if(employeeEntity.getDept() != null){
             dto.setDeptNo(employeeEntity.getDept().getDeptno());
@@ -137,6 +161,23 @@ public class EmployeeService {
 
         return convertEntityToDTO(employeeDAO.save(employee));
 
+    }
 
+    public void addToProject(int employeeId, int projectId){
+        EmployeeEntity empl = employeeDAO.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee with ID: " + employeeId + " not found"));
+
+        ProjectEntity project = projectDAO.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project with ID: " + projectId + " not found"));
+
+        Set<ProjectEntity> projectEntities = empl.getProjects();
+
+        if(projectEntities == null){
+            projectEntities = new HashSet<>();
+            empl.setProjects(projectEntities);
+        }
+
+        projectEntities.add(project);
+        employeeDAO.save(empl);
     }
 }

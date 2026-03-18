@@ -71,4 +71,11 @@ public class EmployeeController {
 
     }
 
+    @PatchMapping("/{id}/project/{projId}")
+    public ResponseEntity<Void> addToEmployeeToProject(@PathVariable(value = "id") int id,
+                                                    @PathVariable(value = "projId")int projId){
+        emplService.addToProject(id, projId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

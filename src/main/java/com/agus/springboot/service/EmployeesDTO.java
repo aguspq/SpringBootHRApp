@@ -1,6 +1,9 @@
 package com.agus.springboot.service;
 
+import com.agus.springboot.model.entities.ProjectEntity;
 import jakarta.validation.constraints.*;
+
+import java.util.Set;
 
 public class EmployeesDTO {
     private Integer empno;
@@ -14,18 +17,20 @@ public class EmployeesDTO {
     private Integer deptNo;
     private String deptName;
     private String deptLocation;
+    private Set<ProjectDTO> projectDTOSet;
 
     public EmployeesDTO(){
 
     }
 
-    public EmployeesDTO(Integer empno, String name, String job,Integer deptNo, String deptName, String deptLocation ){
+    public EmployeesDTO(Integer empno, String name, String job,Integer deptNo, String deptName, String deptLocation, Set<ProjectDTO> projectEntitySet ){
         this.empno = empno;
         this.name = name;
         this.job = job;
         this.deptNo = deptNo;
         this.deptName = deptName;
         this.deptLocation = deptLocation;
+        this.projectDTOSet = projectEntitySet;
     }
 
     public Integer getEmpno(){
@@ -56,4 +61,9 @@ public class EmployeesDTO {
     public void setDeptLocation(String deptLocation){
         this.deptLocation = deptLocation;
     }
+
+    public Set<ProjectDTO> getProjectDTOSet() {
+        return projectDTOSet;
+    }
+    public void setProjectDTOSet(Set<ProjectDTO> projectDTOSet) { this.projectDTOSet = projectDTOSet; }
 }

@@ -1,12 +1,14 @@
 package com.agus.springboot.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "employee", schema = "public", catalog = "employeeAPC2425")
@@ -29,7 +31,10 @@ public class EmployeeEntity {
 
     @Column(name = "isactive")
     private Boolean isActive = true;
-
+    @ManyToMany
+    @JoinTable(name = "employee_project", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
+    @JsonIgnoreProperties("projects")
+    private Set<ProjectEntity> projects;
     public Integer getEmpno() {
         return empno;
     }
@@ -69,6 +74,8 @@ public class EmployeeEntity {
     public void setActive(Boolean active) {
         isActive = active;
     }
+    public void setProjects(Set<ProjectEntity> projects) { this.projects = projects; }
+    public Set<ProjectEntity> getProjects(){ return projects; }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
