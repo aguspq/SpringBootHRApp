@@ -3,18 +3,38 @@ package com.agus.springboot.service;
 import jakarta.validation.constraints.NotNull;
 
 public class ProjectDTO {
-    @NotNull
+
     private int id;
     @NotNull
     private String name;
+    @NotNull
+    private String description;
 
     public ProjectDTO(){
 
     }
 
-    public ProjectDTO(int id, String name){
-        this.id = id;
+    public ProjectDTO(String name, String description){
         this.name = name;
+        this.description = description;
+    }
+
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setId(int id) {
@@ -23,13 +43,5 @@ public class ProjectDTO {
 
     public int getId() {
         return id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 }

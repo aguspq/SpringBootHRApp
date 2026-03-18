@@ -16,6 +16,8 @@ public class ProjectEntity {
     private String name;
     @Column(name = "description")
     private String description;
+    @Column(name = "isactive")
+    private boolean isActive = true;
     @ManyToMany(mappedBy = "projects")
     private Set<EmployeeEntity> employees;
 
@@ -41,5 +43,13 @@ public class ProjectEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setIsActive(boolean active) {
+        isActive = active;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
     }
 }

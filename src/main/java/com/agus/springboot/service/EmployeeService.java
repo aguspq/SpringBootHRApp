@@ -74,8 +74,8 @@ public class EmployeeService {
 
     private ProjectDTO convertProjectToDTO(ProjectEntity project){
         ProjectDTO dto = new ProjectDTO(
-                project.getId(),
-                project.getName()
+                project.getName(),
+                project.getDescription()
         );
 
         return dto;

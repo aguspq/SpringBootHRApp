@@ -8,6 +8,7 @@ import com.agus.springboot.service.EmployeesDTO;
 import jakarta.validation.Valid;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDTO> saveDept (@Valid @RequestBody DepartmentDTO dept){
         DepartmentDTO newDept = deptService.saveDept(dept);
 
-        return ResponseEntity.ok().body(newDept);
+        return new ResponseEntity<>(newDept, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}") // we don't use @Valid to allow partial updates
