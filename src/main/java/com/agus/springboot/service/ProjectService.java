@@ -23,10 +23,13 @@ public class ProjectService {
     }
 
     private ProjectDTO convertEntityToDTO(ProjectEntity project){
-        return new ProjectDTO(
+        ProjectDTO projectDTO = new ProjectDTO(
                 project.getName(),
                 project.getDescription()
         );
+        projectDTO.setId(project.getId());
+
+        return  projectDTO;
     }
 
     public ProjectDTO saveProject(ProjectDTO projectDTO){
