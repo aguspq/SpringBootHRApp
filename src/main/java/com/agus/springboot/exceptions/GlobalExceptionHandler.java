@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestControllerAdvice
@@ -31,16 +32,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> methodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request){
-        Map<String, String> map = new HashMap<>();
+    public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request){
+        String sError = ex.getBindingResult().getFieldErrors()
+                 .stream()
+                 .map(error -> error.getField() + " " + error.getDefaultMessage())
+                 .collect(Collectors.joining(" | ")); // Readability
 
-        List<FieldError> list = ex.getBindingResult().getFieldErrors();
+        ErrorMessage errorMessage = new ErrorMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now(),
+                "Validation Failed",
+                sError
+        );
 
-        for(FieldError error : list){
-            map.put(error.getField(), error.getDefaultMessage());
-        }
-
-        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
 }
