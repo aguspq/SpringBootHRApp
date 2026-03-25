@@ -1,8 +1,8 @@
-# SpringBootHRApp
-
+# SpringBootHRApp ![Status](https://img.shields.io/badge/Status-In_Progress-yellow?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-17%2B-orange?style=for-the-badge&logo=openjdk)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.x-brightgreen?style=for-the-badge&logo=spring)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15%2B-blue?style=for-the-badge&logo=postgresql)
+
 
 **SpringBootHRApp** is a high-performance RESTful API designed for Enterprise Human Resources management. It provides a robust backend to orchestrate the complex relationships between **Departments**, **Employees**, and **Projects**.
 
@@ -42,6 +42,22 @@
 
 Once the server is running, explore and test the endpoints via **Swagger UI** at:
 `http://localhost:8080/swagger-ui/index.html`
+## 🗺️ Roadmap & Upcoming Features
 
+This project is under **active development**. The following modules are planned for the next releases:
+
+* [x] **Phase 1: Clean API & Robustness** (Global Exception Handling, DTO Pattern, Validations).
+* [x] **Phase 2: Complex Relational Mapping** (Many-to-Many & One-to-Many implementation).
+* [ ] **Phase 3: Security Layer (High Priority)**
+    * Implementing **Spring Security 6** with **JWT** for stateless authentication.
+    * Role-Based Access Control (RBAC): Admin vs. User permissions.
+* [ ] **Phase 4: Testing Suite**
+    * Unit testing for Service Layer using **JUnit 5** and **Mockito**.
+    * Integration testing for REST Endpoints.
+* [ ] **Phase 5: DevOps & Deployment**
+    * Containerization with **Docker** and **Docker Compose**.
+    * CI/CD pipeline setup for automated deployment.
+* [ ] **Phase 6: External Integration (Optional)**
+    * Connecting to a Currency Exchange API for dynamic salary calculations.
 ---
 *Developed as a high-quality portfolio piece focusing on Clean Code and SOLID principles.*
