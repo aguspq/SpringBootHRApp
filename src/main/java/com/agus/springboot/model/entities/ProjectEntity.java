@@ -3,6 +3,7 @@ package com.agus.springboot.model.entities;
 import com.agus.springboot.service.EmployeesDTO;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,7 +20,7 @@ public class ProjectEntity {
     @Column(name = "isactive")
     private boolean isActive = true;
     @ManyToMany(mappedBy = "projects")
-    private Set<EmployeeEntity> employees;
+    private Set<EmployeeEntity> employees = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -51,5 +52,13 @@ public class ProjectEntity {
 
     public boolean getIsActive() {
         return isActive;
+    }
+
+    public void setEmployees(Set<EmployeeEntity> employees) {
+        this.employees = employees;
+    }
+
+    public Set<EmployeeEntity> getEmployees() {
+        return employees;
     }
 }

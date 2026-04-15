@@ -1,7 +1,9 @@
 package com.agus.springboot.service;
 
 import com.agus.springboot.exceptions.ResourceNotFoundException;
+import com.agus.springboot.model.dao.IEmployeeDAO;
 import com.agus.springboot.model.dao.IProjectDAO;
+import com.agus.springboot.model.entities.EmployeeEntity;
 import com.agus.springboot.model.entities.ProjectEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,15 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
     @Autowired
     private IProjectDAO projectDAO;
+    @Autowired
+    private IEmployeeDAO employeeDAO;
 
     // READ
     public Page<ProjectDTO> findAllProjects(Pageable pageable){
@@ -60,5 +65,17 @@ public class ProjectService {
         project.setIsActive(false);
 
         projectDAO.save(project);
+    }
+
+    public void assignProjectToEmployee(int idEmployee, int idProject){
+        ProjectEntity project = projectDAO.findById(idProject)
+                .orElseThrow(() -> new ResourceNotFoundException("Project with ID: " + idProject + " not found"));
+        EmployeeEntity employee = employeeDAO.findById(idEmployee)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee with ID: " + idEmployee + " not found"));
+
+        project.getEmployees().add(employee);
+        employee.getProjects().add(project);
+
+        employeeDAO.save(employee);
     }
 }

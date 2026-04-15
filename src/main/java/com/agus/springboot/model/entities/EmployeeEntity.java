@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,7 +35,7 @@ public class EmployeeEntity {
     @ManyToMany
     @JoinTable(name = "employee_project", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
     @JsonIgnoreProperties("projects")
-    private Set<ProjectEntity> projects;
+    private Set<ProjectEntity> projects = new HashSet<>();
     public Integer getEmpno() {
         return empno;
     }

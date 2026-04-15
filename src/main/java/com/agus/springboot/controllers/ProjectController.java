@@ -46,4 +46,11 @@ public class ProjectController {
         projectService.deleteProject(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{projectId}/employees/{employeeId}")
+    public ResponseEntity<?> assignProjectToEMployee(@PathVariable(value = "employeeId") int emplId,
+                                                     @PathVariable(value = "projectId") int projId){
+        projectService.assignProjectToEmployee(emplId, projId);
+        return ResponseEntity.noContent().build();
+    }
 }

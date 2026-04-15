@@ -18,7 +18,6 @@ public class EmployeesDTO {
     private String deptName;
     private String deptLocation;
     private Set<ProjectDTO> projectDTOSet;
-
     public EmployeesDTO(){
 
     }
