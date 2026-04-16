@@ -1,7 +1,5 @@
 package com.agus.springboot.controllers;
 
-import com.agus.springboot.model.dao.IProjectDAO;
-import com.agus.springboot.model.entities.ProjectEntity;
 import com.agus.springboot.service.ProjectDTO;
 import com.agus.springboot.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +20,7 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Operation(summary = "List all projects", description = "Retrieves a paginated list of  projects. Default size is 5")
     @GetMapping // READ
     public ResponseEntity<Page<ProjectDTO>> findAllProjects(@PageableDefault(size = 5) Pageable pageable){
         return ResponseEntity.ok(projectService.findAllProjects(pageable));
@@ -35,18 +34,23 @@ public class ProjectController {
 
     }
 
+    @Operation(summary = "Update project", description = "Updates a project by its ID.")
     @PutMapping("/{id}") // UPDATE
     public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO project,
                                            @PathVariable(value = "id") int id){
         return ResponseEntity.ok(projectService.updateProject(project, id));
     }
 
+    @Operation(summary = "Delete project", description = "Soft deletes a project by setting its isActive field to false.")
     @PatchMapping("/{id}")
     public ResponseEntity<?> deleteProject(@PathVariable(value = "id") int id) {
         projectService.deleteProject(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Assign project to employee",
+            description = "Establishes a bidirectional relationship between an employee and a project. " +
+            "It updates the join table 'employee_project' ensuring data consistency.")
     @PatchMapping("/{projectId}/employees/{employeeId}")
     public ResponseEntity<?> assignProjectToEMployee(@PathVariable(value = "employeeId") int emplId,
                                                      @PathVariable(value = "projectId") int projId){

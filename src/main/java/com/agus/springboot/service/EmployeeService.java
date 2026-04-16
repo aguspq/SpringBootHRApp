@@ -56,7 +56,7 @@ public class EmployeeService {
         return convertEntityToDTO(saved);
     }
 
-    public EmployeesDTO findEmployeeByIdDTO(int id){
+    public EmployeesDTO findEmployeeById(int id){
         return employeeDAO.findById(id)
                 .map(this::convertEntityToDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + id));
