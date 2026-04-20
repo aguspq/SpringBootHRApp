@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 
 // How to TEST (the 3 AAA's):
 // 1- Arrange
-// Create fake data and program Mocks
+// Create "fake" data and program Mocks
 // 2- Act
 // Call service method to check
 // 3- Assert/Verify
@@ -117,36 +117,41 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("Throw ResourceNotFoundException when ID does not exists")
-    public void saveEmployee_ShouldThrowException_WhenDeptDoesNotExist(){
+    @DisplayName("Throw ResourceNotFoundException when DEPT does not exists")
+    public void saveEmployee_ShouldThrowException_WhenDeptNotFound(){
         int nonExistentID = 99;
-
-        // 1. SET / ARRANGE
         // Create INPUT DTO (what user sends)
         EmployeesDTO inputDto = new EmployeesDTO();
         inputDto.setName("Agus");
-        inputDto.setJob("DEV");
         inputDto.setDeptNo(nonExistentID);
 
-        // Creamos las ENTIDADES para los Mocks "simuladas"
-        DeptEntity deptEntity = new DeptEntity(20, "RESEARCH", "DALLAS", true);
-        EmployeeEntity savedEntity = new EmployeeEntity("Agus", "DEV", deptEntity);
-        savedEntity.setEmpno(100);
-
-        // MOCKITO: Program answers
+//        Arrange
         Mockito.when(deptDAO.findById(nonExistentID)).thenReturn(Optional.empty());
-        Mockito.when(employeeDAO.save(any(EmployeeEntity.class))).thenReturn(savedEntity);
 
-        // 2. ACT
-        // Llamamos con el DTO, como lo haría el Controller
-        EmployeesDTO result = employeeService.saveEmployee(inputDto);
 
         // verify
         assertThrows(ResourceNotFoundException.class, () -> {
-            employeeService.findEmployeeById(nonExistentID);
+            employeeService.saveEmployee(inputDto);
         });
 
-        verify(employeeDAO, times(1)).findById(id);
+        verify(deptDAO, times(1)).findById(nonExistentID);
+        verify(employeeDAO, never()).save(any());
+        
+    }
+
+    @Test
+    @DisplayName("Throw exception if DTO has ID")
+    void saveEmployee_ShouldThrowException_WhenIdIsProvided() {
+        EmployeesDTO inputDto = new EmployeesDTO();
+        inputDto.setEmpno(1);
+
+        assertThrows(ResourceNotFoundException.class, () ->{
+            employeeService.saveEmployee(inputDto);
+        });
+
+        verify(deptDAO, never()).findById(anyInt());
+        verify(employeeDAO, never()).save(any());
+
     }
 
 }
