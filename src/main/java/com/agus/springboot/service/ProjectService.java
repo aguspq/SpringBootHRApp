@@ -74,4 +74,10 @@ public class ProjectService {
 
         employeeDAO.save(employee);
     }
+
+    public ProjectDTO findProjectById(int idProject){
+        return convertEntityToDTO(projectDAO.findById(idProject)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found")));
+    }
+
 }
